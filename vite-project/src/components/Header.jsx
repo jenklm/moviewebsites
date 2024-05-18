@@ -21,8 +21,8 @@ export default function Header(){
                 <div className="header-right-wrap">
                     <ul>
                         <li>
-                            <Link className="header-nav-signup" to='/' onClick={()=>handleButtonClick('signup')}>
-                                {activeButton==='signup'? '로그아웃':'로그인'}
+                            <Link className="header-nav-signup" to='/signuppage'>
+                                회원가입
                             </Link>
                             
                         </li>

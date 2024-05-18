@@ -9,6 +9,7 @@ import TopRatedPage from "./pages/TopRatedPage";
 import UpComing from "./pages/UpComing";
 import NotFound from "./pages/NotFound";
 import MovieDetailPage from "./pages/MovieDetailPage";
+import SignUpPage from "./pages/SignupPage";
 
 import './index.css';
 
@@ -19,6 +20,7 @@ function App(){
             <Header />
                 <Routes>
                     <Route path="/" element={<MainPage />} />
+                    <Route path="/signuppage" element={<SignUpPage />} />
                     <Route path="/popularpage" element={<PopularPage />} />
                     <Route path="/nowplayingpage" element={<NowPlayingPage />} />
                     <Route path="/topratedpage" element={<TopRatedPage />} />
