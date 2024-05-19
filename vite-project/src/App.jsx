@@ -10,6 +10,7 @@ import UpComing from "./pages/UpComing";
 import NotFound from "./pages/NotFound";
 import MovieDetailPage from "./pages/MovieDetailPage";
 import SignUpPage from "./pages/SignupPage";
+import LoginPage from "./pages/LoginPage";
 
 import './index.css';
 
@@ -21,11 +22,12 @@ function App(){
                 <Routes>
                     <Route path="/" element={<MainPage />} />
                     <Route path="/signuppage" element={<SignUpPage />} />
+                    <Route path="/loginpage" element={<LoginPage/>}/> 
                     <Route path="/popularpage" element={<PopularPage />} />
                     <Route path="/nowplayingpage" element={<NowPlayingPage />} />
                     <Route path="/topratedpage" element={<TopRatedPage />} />
                     <Route path="/upcoming" element={<UpComing />} />
-                    <Route path="/:movieName" element={<MovieDetailPage/>}/> // id라는 params를 추가한 라우트 추가
+                    <Route path="/:movieName" element={<MovieDetailPage/>}/> {/* id라는 params를 추가한 라우트 추가*/}
                     <Route path="*" element={<NotFound />} />
                 </Routes>
             <Footer />    
