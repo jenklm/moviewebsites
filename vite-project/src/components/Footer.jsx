@@ -1,5 +1,19 @@
 import React from "react";
-import '../index.css';
+import styled from "styled-components"
+
+const FooterWrap = styled.div`
+    display: none;
+`
+
+const FooterLeftWrap = styled.div`
+    color: white;
+    padding: 10px;
+`
+
+const FooterRightWrap = styled.div`
+    color: white;
+    padding: 10px;
+`
 
 export default function Footer(){
     // 현재 사이트 주소 가져오기
@@ -10,14 +24,14 @@ export default function Footer(){
 
     return(
         <div className="footer-container">
-            <div className="footer-wrap">
-                <div className="footer-left-wrap">
+            <FooterWrap>
+                <FooterLeftWrap>
                     Current Site: {currentUrl}
-                </div>
-                <div className="footer-right-wrap">
+                </FooterLeftWrap>
+                <FooterRightWrap>
                     Always Visible URL: <a href={alwaysVisibleUrl}>{alwaysVisibleUrl}</a>
-                </div>
-            </div>
+                </FooterRightWrap>
+            </FooterWrap>
         </div>
     )
 }

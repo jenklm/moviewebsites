@@ -2,6 +2,25 @@ import React from "react";
 import Movie from "../components/Movie";
 import { useState } from "react";
 import { useEffect } from "react";
+import styled from 'styled-components';
+
+const Body = styled.div`
+  background-color: #20254C;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+`;
+
+const Appcontainer = styled.div`
+  background-color: #20254C;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr); // 6 columns
+  gap: 10px;
+  justify-items: center;
+  padding: 20px;
+`;
 
 
 export default function TopRatedPage(){
@@ -24,8 +43,8 @@ export default function TopRatedPage(){
   
   
     return(
-      <div>
-        <div className="app-container">
+      <Body>
+        <Appcontainer>
           {
             movies.map((item)=>{
               return(
@@ -40,8 +59,8 @@ export default function TopRatedPage(){
             })
           }
   
-        </div>
+        </Appcontainer>
   
-      </div>
+      </Body>
     );
   }

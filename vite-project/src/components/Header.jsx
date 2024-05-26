@@ -1,57 +1,111 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useLocation } from "react-router-dom";
+import styled from "styled-components";
 
-   
+const HeaderContainer = styled.div`
+  background-color: #20254C;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+`;
 
-export default function Header(){
-    const [activeButton, setActiveButton] = React.useState(null); //why null?.....idk
+const Headerwrap = styled.div`
+  height: 70px;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
 
-    const handleButtonClick = buttonName => {
-    setActiveButton(buttonName === activeButton ? null : buttonName);
-    };
+const HeaderLeftWrap = styled.div`
+  display: flex;
+  margin-right: 14px;
+  padding: 50px;
+  font-size: 20px;
+`;
 
-    return(
-        <div className="header-container">
-            <div className="header-wrap">
-                <div className="header-left-wrap">
-                    <Link className="UMCMovie" to='/'>
-                        UMC Movie
-                    </Link>
-                </div>
-                <div className="header-right-wrap">
-                    <ul>
-                        <li>
-                            <Link className="header-nav-signup" to='/signuppage'>
-                                회원가입
-                            </Link>
-                            
-                        </li>
-                        <li>
-                            <Link className="header-nav-item" to='/popularpage'>
-                                Popular
-                            </Link>
-                        </li>
-                        <li>
-                            <Link className="header-nav-item" to='/nowplayingpage'>
-                                Now Playing
-                            </Link>
-                        </li>
-                        <li>
-                            <Link className="header-nav-item" to='/topratedpage'>
-                                Top Rated
-                            </Link>
-                        </li>
-                        <li>
-                            <Link className="header-nav-item" to='/upcoming'>
-                                Upcoming
-                            </Link>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+const HeaderRightWrap = styled.div`
+  display: flex;
+  padding-right: 20px;
 
-        </div>
-    )
+  ul {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  li {
+    margin-right: 14px;
+    padding: 8px;
+    font-size: 18px;
+  }
+
+  li:hover {
+    font-weight: bold;
+    font-size: 110%;
+  }
+`;
+
+const UMCMovieLink = styled(Link)`
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+`;
+
+const HeadernavItem = styled(Link)`
+  color: ${({ isActive }) => (isActive ? 'gold' : 'white')};
+  text-decoration: none;
+  font-weight: 500;
+  font-weight: ${({ isActive }) => (isActive ? 'bold' : '500')};
+`;
+
+export default function Header() {
+  const location = useLocation();
+
+  return (
+    <HeaderContainer>
+      <Headerwrap>
+        <HeaderLeftWrap>
+          <UMCMovieLink to="/">
+            UMC Movie
+          </UMCMovieLink>
+        </HeaderLeftWrap>
+        <HeaderRightWrap>
+          <ul>
+            <li>
+              <HeadernavItem to="/signuppage" isActive={location.pathname === '/signuppage'}>
+                회원가입
+              </HeadernavItem>
+            </li>
+            <li>
+              <HeadernavItem to="/popularpage" isActive={location.pathname === '/popularpage'}>
+                Popular
+              </HeadernavItem>
+            </li>
+            <li>
+              <HeadernavItem to="/nowplayingpage" isActive={location.pathname === '/nowplayingpage'}>
+                Now Playing
+              </HeadernavItem>
+            </li>
+            <li>
+              <HeadernavItem to="/topratedpage" isActive={location.pathname === '/topratedpage'}>
+                Top Rated
+              </HeadernavItem>
+            </li>
+            <li>
+              <HeadernavItem to="/upcomingpage" isActive={location.pathname === '/upcomingpage'}>
+                Upcoming
+              </HeadernavItem>
+            </li>
+          </ul>
+        </HeaderRightWrap>
+      </Headerwrap>
+    </HeaderContainer>
+  );
+}
 
     
-}

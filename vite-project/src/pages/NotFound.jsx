@@ -3,6 +3,12 @@ import Movie from "../components/Movie";
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
+const Errorcontainer=styled.div`
+    background-color: #20254C;
+    width:100%;
+    height: 100%;
+ `;
+
 const CLink=styled(Link)`
     color: #fff; 
     text-decoration: none;
@@ -16,6 +22,7 @@ color:#fff;
 height: 100vh;
 display: flex;
 flex-direction: column; 
+font-size:100px;
 
 `;
 const T1=styled.p`
@@ -37,7 +44,7 @@ font-style:italic;
 
 export default function NotFound(){
     return(
-        <div className ='error-container'>
+        <Errorcontainer>
         <Notfoundcontainer>
         <div className='error'>
             <T1> Oops! </T1>
@@ -48,7 +55,7 @@ export default function NotFound(){
             </h4>
         </div>
         </Notfoundcontainer>
-        </div>
+        </Errorcontainer>
        )
 }
     

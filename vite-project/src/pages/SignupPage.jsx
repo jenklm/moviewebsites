@@ -70,6 +70,7 @@ const StyledLink = styled(Link)`
 
 export default function SignUpPage() {
   const [name, setName] = useState('');
+  const [id, setId]=useState('');
   const [email, setEmail] = useState('');
   const [age, setAge] = useState('');
   const [password, setPassword] = useState('');
@@ -88,6 +89,16 @@ export default function SignUpPage() {
     // $ 는 문자열의 끝을 의미.
     // '/.test(value)는 정규 표현식 객체의 test 메서드를 호출하는 것. test 메서드는 문자열 value가 정규 표현식과 일치하는지 검사함. 일치하면 true 아니면 false
     else if (!/^[가-힣a-zA-Z]+$/.test(value)) {
+      return '이름은 한글 또는 영어로만 이루어져야 합니다.';
+    }
+    return '';
+  };
+
+  const validateId = (value) => {
+    if (!value.trim()) {
+      return '아이디를 입력해주세요.';
+    } 
+    else if (!/(?=.*[a-zA-Z])(?=.*\d)/.test(value)) {
       return '이름은 한글 또는 영어로만 이루어져야 합니다.';
     }
     return '';
@@ -155,14 +166,16 @@ export default function SignUpPage() {
     setSubmitted(true);
 
     const nameError = validateName(name);
+    const idError = validateId(id);
     const emailError = validateEmail(email);
     const ageError = validateAge(age);
     const passwordError = validatePassword(password);
     const confirmPasswordError = validateConfirmPassword(confirmPassword);
 
-    if (!nameError && !emailError && !ageError && !passwordError && !confirmPasswordError) {
+    if (!nameError && !idError && !emailError && !ageError && !passwordError && !confirmPasswordError) {
       console.log('유효성 검사 통과!');
       console.log('이름:', name);
+      console.log('아이디:',id);
       console.log('이메일:', email);
       console.log('나이:', age);
       console.log('비밀번호:', password);
@@ -178,6 +191,7 @@ export default function SignUpPage() {
   // isValid가 true이면 모든 유효성 검사 함수가 빈 문자열(즉, 오류가 없음)을 반환한 것이고, 이 경우 제출 버튼의 색상이 변경됨!!
   const isValid =
   !validateName(name) &&
+  !validateId(id) &&
   !validateEmail(email) &&
   !validateAge(age) &&
   !validatePassword(password) &&
@@ -200,7 +214,12 @@ export default function SignUpPage() {
               onChange={(e) => setName(e.target.value)}
             />
             {(submitted && validateName(name)) && <p style={{ color: 'red', fontSize: "15px" }}>{validateName(name)}</p>}
-            
+            <InputField
+              type="text"
+              placeholder="아이디를 입력해주세요"
+              value={id}
+              onChange={(e) => setId(e.target.value)}
+            />
             <InputField
               type="email"
               placeholder="이메일을 입력해주세요"

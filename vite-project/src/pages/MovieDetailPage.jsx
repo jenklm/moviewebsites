@@ -1,12 +1,31 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
+
+const Background = styled.div`
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+`;
+
+const BackgroundImage = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-image: url(${props => props.imageUrl});
+  background-size: cover;
+  background-position: center;
+  opacity: 0.2;
+`;
 
 const DetailContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  left:30vh;
+  background-color: #373b69;
 `;
 const Image = styled.img`
   width: 400px;
@@ -25,11 +44,12 @@ const Detailrightwrap = styled.div`
 `;
 
 const Vote = styled.div`
-  line-height: 100%;
+  line-height: 300%;
+  font-weight:bold;
 `;
 
 const Contents = styled.div`
-  line-height: 150%;
+  line-height: 180%;
 `;
 
 const StarsContainer = styled.div`
@@ -78,7 +98,10 @@ export default function MovieDetailPage() {
 
 
   return (
+    <Background>
+    <BackgroundImage imageUrl={`https://image.tmdb.org/t/p/w300${movie.poster_path}`}/>
     <DetailContainer>
+      
       <Detailleftwrap>
         <Image
           style={{ width: '300px', height: '450px' }}
@@ -95,8 +118,7 @@ export default function MovieDetailPage() {
           </div>
           <Contents> {movie.overview ? (
           <>
-            <span>줄거리</span>
-            <br />
+            <span><h4>줄거리</h4></span>
             {movie.overview}
           </>
         ) : (
@@ -106,5 +128,10 @@ export default function MovieDetailPage() {
         </Detailrightwrap>
       </Detailleftwrap>
     </DetailContainer>
+    </Background>
   );
+
+  BackgroundContainer.propTypes = {
+    imageUrl: PropTypes.string.isRequired,
+  };
 }
