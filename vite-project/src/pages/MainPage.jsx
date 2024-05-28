@@ -6,8 +6,8 @@ import Movie from "../components/Movie";
 const MainPageContainer = styled.div`
   height: 200%;
   width: 100%;
-  margin:none;
-  padding:none;
+  margin: none;
+  padding: none;
   background-color: #20254C;
 `;
 
@@ -69,19 +69,16 @@ const TitleButton = styled.button`
 const MainPageBottom = styled.div`
   width: 1200px;
   height: 700px;
-  margin-top:30px;
+  margin-top: 30px;
   overflow: auto;
-  background-color: #111848 ;
-  border-radius:10px;
+  background-color: #111848;
+  border-radius: 10px;
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
   justify-content: center;
   align-items: center;
-
 `;
-
-
 
 export default function MainPage() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -94,8 +91,8 @@ export default function MainPage() {
 
   const handleSearch = () => {
     setQuery(searchQuery);
+    setSearchQuery(""); // Clear the search input after setting the query
   };
-
 
   useEffect(() => {
     const fetchMovies = async () => {
@@ -115,7 +112,7 @@ export default function MainPage() {
     };
 
     fetchMovies();
-  }, [searchQuery]);
+  }, [query]);
 
   return (
     <MainPageContainer>
@@ -132,9 +129,7 @@ export default function MainPage() {
             />
           </MainPageDownInput>
           <div>
-            <TitleButton onClick={handleSearch}>
-            🔍
-            </TitleButton>
+            <TitleButton onClick={handleSearch}>🔍</TitleButton>
           </div>
         </MainPageDownWrap>
         {movies.length > 0 && (
