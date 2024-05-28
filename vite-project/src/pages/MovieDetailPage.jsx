@@ -48,12 +48,12 @@ const Detailrightwrap = styled.div`
 const Vote = styled.div`
   line-height: 300%;
   font-weight: bold;
-  color: #fff; 
+  color: #fff; /* Added to change text color */
 `;
 
 const Contents = styled.div`
   line-height: 180%;
-  color: #fff; 
+  color: #fff; /* Added to change text color */
 `;
 
 const StarsContainer = styled.div`
@@ -82,8 +82,10 @@ const CastImage = styled.img`
 `;
 
 const CastText = styled.div`
-  color: #fff; 
+  color: #fff; /* Added to change text color */
 `;
+
+const DEFAULT_IMAGE_URL = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSz7ztleRwzXhFdiwBYqZ8cib9RvEsukVVUS3niN1YQ&s';
 
 export default function MovieDetailPage() {
   const { movieName } = useParams();
@@ -161,14 +163,14 @@ export default function MovieDetailPage() {
                 .filter((crewMember) => crewMember.job === 'Director')
                 .map((director) => (
                   <CastItem key={director.credit_id}>
-                    {director.profile_path && <CastImage src={`https://image.tmdb.org/t/p/w200${director.profile_path}`} alt={director.name} />}
+                    <CastImage src={director.profile_path ? `https://image.tmdb.org/t/p/w200${director.profile_path}` : DEFAULT_IMAGE_URL} alt={director.name} />
                     <CastText>{director.name}</CastText>
                   </CastItem>
                 ))}
               <h4>출연진</h4>
               {movieCredits.cast.slice(0, 5).map((actor) => (
                 <CastItem key={actor.cast_id}>
-                  {actor.profile_path && <CastImage src={`https://image.tmdb.org/t/p/w200${actor.profile_path}`} alt={actor.name} />}
+                  <CastImage src={actor.profile_path ? `https://image.tmdb.org/t/p/w200${actor.profile_path}` : DEFAULT_IMAGE_URL} alt={actor.name} />
                   <CastText>{actor.name} - {actor.character}</CastText>
                 </CastItem>
               ))}
