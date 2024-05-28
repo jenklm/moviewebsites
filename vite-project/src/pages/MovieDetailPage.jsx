@@ -24,32 +24,36 @@ const DetailContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  left:30vh;
+  left: 30vh;
   background-color: #373b69;
+  color: #fff; /* Added to change text color */
 `;
+
 const Image = styled.img`
-  width: 400px;
-  height: auto;
+  width: 300px;
+  height: 450px;
   margin-bottom: 20px;
   margin: 20px 100px;
 `;
+
 const Detailleftwrap = styled.div`
   padding: 300px;
-  display:flex;
+  display: flex;
 `;
 
 const Detailrightwrap = styled.div`
   margin-left: 100px;
-  
 `;
 
 const Vote = styled.div`
   line-height: 300%;
-  font-weight:bold;
+  font-weight: bold;
+  color: #fff; 
 `;
 
 const Contents = styled.div`
   line-height: 180%;
+  color: #fff; 
 `;
 
 const StarsContainer = styled.div`
@@ -60,15 +64,43 @@ const StarIcon = styled.span`
   color: #FFD700; /* 별의 색상을 노란색으로 지정 */
 `;
 
+const CastContainer = styled.div`
+  margin-top: 20px;
+`;
+
+const CastItem = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+`;
+
+const CastImage = styled.img`
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 10px;
+`;
+
+const CastText = styled.div`
+  color: #fff; 
+`;
+
 export default function MovieDetailPage() {
   const { movieName } = useParams();
   const [movie, setMovie] = useState(null);
+  const [movieCredits, setMovieCredits] = useState(null);
 
   useEffect(() => {
     const fetchMovie = async () => {
       try {
         const response = await axios.get(`https://api.themoviedb.org/3/search/movie?language=ko-KR&api_key=c6eb9ce132e74642f9749d5c706b8c6b&query=${movieName}`);
-        setMovie(response.data.results[0]);
+        const movie = response.data.results[0];
+        setMovie(movie);
+
+        if (movie) {
+          const creditsResponse = await axios.get(`https://api.themoviedb.org/3/movie/${movie.id}/credits?api_key=c6eb9ce132e74642f9749d5c706b8c6b`);
+          setMovieCredits(creditsResponse.data);
+        }
       } catch (error) {
         console.error('Error fetching movie:', error);
       }
@@ -77,7 +109,7 @@ export default function MovieDetailPage() {
     fetchMovie();
   }, [movieName]);
 
-  if (!movie) {
+  if (!movie || !movieCredits) {
     return <div>Loading...</div>;
   }
 
@@ -96,42 +128,58 @@ export default function MovieDetailPage() {
     return stars;
   };
 
-
   return (
     <Background>
-    <BackgroundImage imageUrl={`https://image.tmdb.org/t/p/w300${movie.poster_path}`}/>
-    <DetailContainer>
-      
-      <Detailleftwrap>
-        <Image
-          style={{ width: '300px', height: '450px' }}
-          src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-          alt={movie.title}
-        />
-        <Detailrightwrap>
-          <div className='title'>
-            <div>{movie.title}</div>
-          </div>
-          <div className='vote'>
-            <Vote>평점 {renderStars()}</Vote>
-            <div>개봉일 {movie.release_date}</div>
-          </div>
-          <Contents> {movie.overview ? (
-          <>
-            <span><h4>줄거리</h4></span>
-            {movie.overview}
-          </>
-        ) : (
-          'TMDB에서 제공하는 API에 상세 줄거리 정보가 없습니다.'
-        )}
-        </Contents>
-        </Detailrightwrap>
-      </Detailleftwrap>
-    </DetailContainer>
+      <BackgroundImage imageUrl={`https://image.tmdb.org/t/p/w300${movie.poster_path}`} />
+      <DetailContainer>
+        <Detailleftwrap>
+          <Image
+            src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+            alt={movie.title}
+          />
+          <Detailrightwrap>
+            <div className='title'>
+              <div>{movie.title}</div>
+            </div>
+            <div className='vote'>
+              <Vote>평점 {renderStars()}</Vote>
+              <div>개봉일 {movie.release_date}</div>
+            </div>
+            <Contents>
+              {movie.overview ? (
+                <>
+                  <span><h4>줄거리</h4></span>
+                  {movie.overview}
+                </>
+              ) : (
+                'TMDB에서 제공하는 API에 상세 줄거리 정보가 없습니다.'
+              )}
+            </Contents>
+            <CastContainer>
+              <h4>감독</h4>
+              {movieCredits.crew
+                .filter((crewMember) => crewMember.job === 'Director')
+                .map((director) => (
+                  <CastItem key={director.credit_id}>
+                    {director.profile_path && <CastImage src={`https://image.tmdb.org/t/p/w200${director.profile_path}`} alt={director.name} />}
+                    <CastText>{director.name}</CastText>
+                  </CastItem>
+                ))}
+              <h4>출연진</h4>
+              {movieCredits.cast.slice(0, 5).map((actor) => (
+                <CastItem key={actor.cast_id}>
+                  {actor.profile_path && <CastImage src={`https://image.tmdb.org/t/p/w200${actor.profile_path}`} alt={actor.name} />}
+                  <CastText>{actor.name} - {actor.character}</CastText>
+                </CastItem>
+              ))}
+            </CastContainer>
+          </Detailrightwrap>
+        </Detailleftwrap>
+      </DetailContainer>
     </Background>
   );
-
-  BackgroundContainer.propTypes = {
-    imageUrl: PropTypes.string.isRequired,
-  };
 }
+
+BackgroundImage.propTypes = {
+  imageUrl: PropTypes.string.isRequired,
+};
