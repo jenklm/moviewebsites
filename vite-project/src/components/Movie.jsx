@@ -70,7 +70,7 @@ const MovieInfo = styled.div`
   }
 `;
 
-const Movie = (props) => {
+const Movie = React.forwardRef((props, ref) => {
   const navigate = useNavigate();
 
   const onClickMovieItem = () => {
@@ -80,7 +80,7 @@ const Movie = (props) => {
   };
 
   return (
-    <MovieContainer onClick={onClickMovieItem}>
+    <MovieContainer ref={ref} onClick={onClickMovieItem}>
       <MovieImage src={IMG_BASE_URL + props.poster_path} alt={props.title} />
       <MovieInfo>
         <h4>{props.title}</h4>
@@ -92,6 +92,6 @@ const Movie = (props) => {
       </MovieDetail>
     </MovieContainer>
   );
-};
+});
 
 export default Movie;
