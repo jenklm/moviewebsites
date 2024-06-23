@@ -1,23 +1,15 @@
-import React, { useState, useEffect, useCallback } from "react";
-import styled from "styled-components";
-import { IoSearchOutline } from "react-icons/io5";
-import Movie from "../components/Movie";
-
-// debounce 함수
-function debounce(func, wait) {
-  let timeout;
-  return function(...args) {
-    clearTimeout(timeout);
-    timeout = setTimeout(() => func.apply(this, args), wait);
-  };
-}
+import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
+import Header from '../components/Header';
+import Sidebar from '../components/Sidebar';
+import Movie from '../components/Movie';
 
 const MainPageContainer = styled.div`
   height: 200%;
   width: 100%;
   margin: none;
   padding: none;
-  background-color: #20254C;
+  background-color: #20254c;
 `;
 
 const Welcome = styled.div`
@@ -39,7 +31,7 @@ const MainPageDown = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: #20254C;
+  background-color: #20254c;
 `;
 
 const SearchInfo = styled.div`
@@ -94,6 +86,7 @@ export default function MainPage() {
   const [query, setQuery] = useState("");
   const [movies, setMovies] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const handleSearchInputChange = (event) => {
     setSearchQuery(event.target.value);
@@ -104,9 +97,13 @@ export default function MainPage() {
   };
 
   const handleKeyPress = (event) => {
-    if (event.key === 'Enter') {
+    if (event.key === "Enter") {
       handleSearch();
     }
+  };
+
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
   };
 
   useEffect(() => {
@@ -116,16 +113,16 @@ export default function MainPage() {
           setMovies([]);
           return;
         }
-        setIsLoading(true);  // 데이터 로딩 시작
+        setIsLoading(true); // 데이터 로딩 시작
         const response = await fetch(
           `https://api.themoviedb.org/3/search/movie?api_key=c6eb9ce132e74642f9749d5c706b8c6b&query=${query}`
         );
         const data = await response.json();
         setMovies(data.results);
-        setIsLoading(false);  // 데이터 로딩 완료
+        setIsLoading(false); // 데이터 로딩 완료
       } catch (error) {
         console.error(error);
-        setIsLoading(false);  // 에러 발생 시 데이터 로딩 완료로 변경
+        setIsLoading(false); // 에러 발생 시 데이터 로딩 완료로 변경
       }
     };
 
@@ -134,6 +131,8 @@ export default function MainPage() {
 
   return (
     <MainPageContainer>
+      <Header isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
+      <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
       <Welcome>환영합니다</Welcome>
       <MainPageDown>
         <SearchInfo>📽️ Find your movies!</SearchInfo>
@@ -152,7 +151,7 @@ export default function MainPage() {
           </div>
         </MainPageDownWrap>
         {isLoading ? (
-          <div style={{ color: 'white', marginTop: '20px' }}>데이터를 받아오는 중입니다...</div>
+          <div style={{ color: "white", marginTop: "20px" }}>데이터를 받아오는 중입니다...</div>
         ) : (
           movies.length > 0 && (
             <MainPageBottom>

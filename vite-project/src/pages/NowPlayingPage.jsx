@@ -10,15 +10,42 @@ const Body = styled.div`
   flex-direction: column;
   align-items: center;
   padding: 20px;
+  margin: 0;
+  box-sizing: border-box;
+  width: 100%;
 `;
 
-const Appcontainer = styled.div`
+const AppContainerWrapper = styled.div`
   background-color: #20254C;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+`;
+
+const AppContainer = styled.div`
   display: grid;
-  grid-template-columns: repeat(6, 1fr); // 6 columns
-  gap: 10px;
-  justify-items: center;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 120px; /* 각 영화 컨테이너 간의 간격 설정 */
+  justify-content: center;
   padding: 20px;
+  width: 100%;
+  max-width: 1200px;
+  box-sizing: border-box;
+
+  @media (max-width: 1200px) {
+    grid-template-columns: repeat(3, 1fr); /* 4 columns for medium screens */
+    gap: 15px; /* 간격을 약간 줄임 */
+  }
+
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(2, 1fr); /* 2 columns for small screens */
+    gap: 10px; /* 더 작은 간격 */
+  }
+
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr; /* 1 column for very small screens */
+    gap: 10px; /* 더 작은 간격 */
+  }
 `;
 
 const NowPlayingPage = () => {
@@ -58,32 +85,34 @@ const NowPlayingPage = () => {
 
   return (
     <Body>
-      <Appcontainer>
-        {movies.map((item, index) => {
-          if (movies.length === index + 1) {
-            return (
-              <Movie
-                ref={lastMovieElementRef}
-                key={item.id}
-                title={item.title}
-                poster_path={item.poster_path}
-                vote_average={item.vote_average}
-                overview={item.overview}
-              />
-            );
-          } else {
-            return (
-              <Movie
-                key={item.id}
-                title={item.title}
-                poster_path={item.poster_path}
-                vote_average={item.vote_average}
-                overview={item.overview}
-              />
-            );
-          }
-        })}
-      </Appcontainer>
+      <AppContainerWrapper>
+        <AppContainer>
+          {movies.map((item, index) => {
+            if (movies.length === index + 1) {
+              return (
+                <Movie
+                  ref={lastMovieElementRef}
+                  key={item.id}
+                  title={item.title}
+                  poster_path={item.poster_path}
+                  vote_average={item.vote_average}
+                  overview={item.overview}
+                />
+              );
+            } else {
+              return (
+                <Movie
+                  key={item.id}
+                  title={item.title}
+                  poster_path={item.poster_path}
+                  vote_average={item.vote_average}
+                  overview={item.overview}
+                />
+              );
+            }
+          })}
+        </AppContainer>
+      </AppContainerWrapper>
       {isLoading && <LoadingSpinner />}
     </Body>
   );

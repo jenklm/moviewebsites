@@ -20,6 +20,7 @@ const MovieDetail = styled.div`
   transition: opacity 0.5s ease;
   overflow: auto;
   text-overflow: ellipsis;
+  padding: 10px;
 
   h4 {
     margin: 0;
@@ -41,11 +42,17 @@ const MovieContainer = styled.div`
   box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.1);
   position: relative;
   display: inline-block;
-  top:30px;
+  top: 30px;
 
   &:hover ${MovieDetail} {
     opacity: 1;
     border-radius: 10px;
+  }
+
+  @media (max-width: 768px) {
+    width: 100%; /* 모바일 화면에서는 전체 너비로 설정 */
+    max-width: 400px; /* 최대 너비 설정 */
+    margin: 8px auto; /* 가운데 정렬 */
   }
 `;
 

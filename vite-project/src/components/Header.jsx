@@ -1,9 +1,10 @@
-import React, { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
+import { Link, useLocation } from 'react-router-dom';
+import { IoMenuOutline, IoCloseOutline } from 'react-icons/io5';
 
 const HeaderContainer = styled.div`
-  background-color: #20254C;
+  background-color: #20254c;
   position: fixed;
   top: 0;
   left: 0;
@@ -11,7 +12,7 @@ const HeaderContainer = styled.div`
   z-index: 1000;
 `;
 
-const Headerwrap = styled.div`
+const HeaderWrap = styled.div`
   height: 70px;
   width: 100%;
   margin: 0 auto;
@@ -36,6 +37,10 @@ const HeaderRightWrap = styled.div`
     list-style: none;
     padding: 0;
     margin: 0;
+
+    @media (max-width: 1024px) {
+      display: none;
+    }
   }
 
   li {
@@ -56,56 +61,65 @@ const UMCMovieLink = styled(Link)`
   font-weight: bold;
 `;
 
-const HeadernavItem = styled(Link)`
+const HeaderNavItem = styled(Link)`
   color: ${({ isActive }) => (isActive ? 'gold' : 'white')};
   text-decoration: none;
   font-weight: 500;
   font-weight: ${({ isActive }) => (isActive ? 'bold' : '500')};
 `;
 
-export default function Header() {
+const HamburgerMenu = styled.div`
+  display: none;
+  color: white;
+  cursor: pointer;
+
+  @media (max-width: 1024px) {
+    display: block;
+  }
+`;
+
+export default function Header({ isSidebarOpen, toggleSidebar }) {
   const location = useLocation();
 
   return (
     <HeaderContainer>
-      <Headerwrap>
+      <HeaderWrap>
         <HeaderLeftWrap>
-          <UMCMovieLink to="/">
-            UMC Movie
-          </UMCMovieLink>
+          <UMCMovieLink to="/">UMC Movie</UMCMovieLink>
         </HeaderLeftWrap>
         <HeaderRightWrap>
           <ul>
             <li>
-              <HeadernavItem to="/signuppage" isActive={location.pathname === '/signuppage'}>
+              <HeaderNavItem to="/signuppage" isActive={location.pathname === '/signuppage'}>
                 회원가입
-              </HeadernavItem>
+              </HeaderNavItem>
             </li>
             <li>
-              <HeadernavItem to="/popularpage" isActive={location.pathname === '/popularpage'}>
+              <HeaderNavItem to="/popularpage" isActive={location.pathname === '/popularpage'}>
                 Popular
-              </HeadernavItem>
+              </HeaderNavItem>
             </li>
             <li>
-              <HeadernavItem to="/nowplayingpage" isActive={location.pathname === '/nowplayingpage'}>
+              <HeaderNavItem to="/nowplayingpage" isActive={location.pathname === '/nowplayingpage'}>
                 Now Playing
-              </HeadernavItem>
+              </HeaderNavItem>
             </li>
             <li>
-              <HeadernavItem to="/topratedpage" isActive={location.pathname === '/topratedpage'}>
+              <HeaderNavItem to="/topratedpage" isActive={location.pathname === '/topratedpage'}>
                 Top Rated
-              </HeadernavItem>
+              </HeaderNavItem>
             </li>
             <li>
-              <HeadernavItem to="/upcomingpage" isActive={location.pathname === '/upcomingpage'}>
+              <HeaderNavItem to="/upcomingpage" isActive={location.pathname === '/upcomingpage'}>
                 Upcoming
-              </HeadernavItem>
+              </HeaderNavItem>
             </li>
           </ul>
+          <HamburgerMenu onClick={toggleSidebar}>
+            {isSidebarOpen ? <IoCloseOutline size={30} /> : <IoMenuOutline size={30} />}
+          </HamburgerMenu>
         </HeaderRightWrap>
-      </Headerwrap>
+      </HeaderWrap>
     </HeaderContainer>
   );
 }
-
-    

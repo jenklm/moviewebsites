@@ -20,6 +20,21 @@ const Appcontainer = styled.div`
   gap: 10px;
   justify-items: center;
   padding: 20px;
+
+  @media (max-width: 1200px) {
+    grid-template-columns: repeat(3, 1fr); /* 4 columns for medium screens */
+    gap: 15px; /* 간격을 약간 줄임 */
+  }
+
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(2, 1fr); /* 2 columns for small screens */
+    gap: 10px; /* 더 작은 간격 */
+  }
+
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr; /* 1 column for very small screens */
+    gap: 10px; /* 더 작은 간격 */
+  }
 `;
 
 

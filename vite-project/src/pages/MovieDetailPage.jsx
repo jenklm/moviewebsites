@@ -24,36 +24,46 @@ const DetailContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  left: 30vh;
-  background-color: #373b69;
-  color: #fff; /* Added to change text color */
+  padding: 20px; /* Added padding for spacing on smaller screens */
+  @media (max-width: 768px) {
+    flex-direction: column; /* Stack components vertically on smaller screens */
+  }
 `;
 
 const Image = styled.img`
   width: 300px;
   height: 450px;
   margin-bottom: 20px;
-  margin: 20px 100px;
+  @media (max-width: 768px) {
+    width: 100%; /* Full width on smaller screens */
+    height: auto; /* Maintain aspect ratio */
+    margin: 20px 0;
+  }
 `;
 
 const Detailleftwrap = styled.div`
-  padding: 300px;
   display: flex;
+  flex-direction: column;
+  @media (max-width: 768px) {
+    padding: 20px; /* Added padding for spacing on smaller screens */
+  }
 `;
 
 const Detailrightwrap = styled.div`
   margin-left: 100px;
+  @media (max-width: 768px) {
+    margin-left: 0;
+    margin-top: 20px; /* Adjust spacing */
+  }
 `;
 
 const Vote = styled.div`
   line-height: 300%;
   font-weight: bold;
-  color: #fff; /* Added to change text color */
 `;
 
 const Contents = styled.div`
   line-height: 180%;
-  color: #fff; /* Added to change text color */
 `;
 
 const StarsContainer = styled.div`
@@ -61,7 +71,7 @@ const StarsContainer = styled.div`
 `;
 
 const StarIcon = styled.span`
-  color: #FFD700; /* 별의 색상을 노란색으로 지정 */
+  color: #FFD700;
 `;
 
 const CastContainer = styled.div`
@@ -82,7 +92,7 @@ const CastImage = styled.img`
 `;
 
 const CastText = styled.div`
-  color: #fff; /* Added to change text color */
+  color: #fff;
 `;
 
 const DEFAULT_IMAGE_URL = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSz7ztleRwzXhFdiwBYqZ8cib9RvEsukVVUS3niN1YQ&s';
@@ -116,14 +126,14 @@ export default function MovieDetailPage() {
   }
 
   const renderStars = () => {
-    const rating = Math.round(movie.vote_average / 2); // 10점 만점을 5점 만점으로 변환
+    const rating = Math.round(movie.vote_average / 2);
     const stars = [];
 
     for (let i = 0; i < 5; i++) {
       if (i < rating) {
-        stars.push(<StarIcon key={i}>&#9733;</StarIcon>); // 별표 아이콘 추가
+        stars.push(<StarIcon key={i}>&#9733;</StarIcon>);
       } else {
-        stars.push(<StarIcon key={i}>&#9734;</StarIcon>); // 빈 별표 아이콘 추가
+        stars.push(<StarIcon key={i}>&#9734;</StarIcon>);
       }
     }
 
@@ -134,49 +144,47 @@ export default function MovieDetailPage() {
     <Background>
       <BackgroundImage imageUrl={`https://image.tmdb.org/t/p/w300${movie.poster_path}`} />
       <DetailContainer>
-        <Detailleftwrap>
-          <Image
-            src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-            alt={movie.title}
-          />
-          <Detailrightwrap>
-            <div className='title'>
-              <div>{movie.title}</div>
-            </div>
-            <div className='vote'>
-              <Vote>평점 {renderStars()}</Vote>
-              <div>개봉일 {movie.release_date}</div>
-            </div>
-            <Contents>
-              {movie.overview ? (
-                <>
-                  <span><h4>줄거리</h4></span>
-                  {movie.overview}
-                </>
-              ) : (
-                'TMDB에서 제공하는 API에 상세 줄거리 정보가 없습니다.'
-              )}
-            </Contents>
-            <CastContainer>
-              <h4>감독</h4>
-              {movieCredits.crew
-                .filter((crewMember) => crewMember.job === 'Director')
-                .map((director) => (
-                  <CastItem key={director.credit_id}>
-                    <CastImage src={director.profile_path ? `https://image.tmdb.org/t/p/w200${director.profile_path}` : DEFAULT_IMAGE_URL} alt={director.name} />
-                    <CastText>{director.name}</CastText>
-                  </CastItem>
-                ))}
-              <h4>출연진</h4>
-              {movieCredits.cast.slice(0, 5).map((actor) => (
-                <CastItem key={actor.cast_id}>
-                  <CastImage src={actor.profile_path ? `https://image.tmdb.org/t/p/w200${actor.profile_path}` : DEFAULT_IMAGE_URL} alt={actor.name} />
-                  <CastText>{actor.name} - {actor.character}</CastText>
+        <Image
+          src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+          alt={movie.title}
+        />
+        <Detailrightwrap>
+          <div className='title'>
+            <div>{movie.title}</div>
+          </div>
+          <div className='vote'>
+            <Vote>평점 {renderStars()}</Vote>
+            <div>개봉일 {movie.release_date}</div>
+          </div>
+          <Contents>
+            {movie.overview ? (
+              <>
+                <span><h4>줄거리</h4></span>
+                {movie.overview}
+              </>
+            ) : (
+              'TMDB에서 제공하는 API에 상세 줄거리 정보가 없습니다.'
+            )}
+          </Contents>
+          <CastContainer>
+            <h4>감독</h4>
+            {movieCredits.crew
+              .filter((crewMember) => crewMember.job === 'Director')
+              .map((director) => (
+                <CastItem key={director.credit_id}>
+                  <CastImage src={director.profile_path ? `https://image.tmdb.org/t/p/w200${director.profile_path}` : DEFAULT_IMAGE_URL} alt={director.name} />
+                  <CastText>{director.name}</CastText>
                 </CastItem>
               ))}
-            </CastContainer>
-          </Detailrightwrap>
-        </Detailleftwrap>
+            <h4>출연진</h4>
+            {movieCredits.cast.slice(0, 5).map((actor) => (
+              <CastItem key={actor.cast_id}>
+                <CastImage src={actor.profile_path ? `https://image.tmdb.org/t/p/w200${actor.profile_path}` : DEFAULT_IMAGE_URL} alt={actor.name} />
+                <CastText>{actor.name} - {actor.character}</CastText>
+              </CastItem>
+            ))}
+          </CastContainer>
+        </Detailrightwrap>
       </DetailContainer>
     </Background>
   );
